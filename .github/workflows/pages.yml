@@ -24,7 +24,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/tutorial/media"
           cp web/index.html web/guide.css web/guide.js "$RUNNER_TEMP/tutorial/"
           cp web/media/*.webp "$RUNNER_TEMP/tutorial/media/"
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ runner.temp }}/tutorial
 
