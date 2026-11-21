@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Supply Crate Workshop</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top"
+        ><span class="brand-mark" aria-hidden="true">✳</span> GAME ASSET
+        WORKSHOP</a
+      >
+    </header>
+    <main id="top">
+      <section class="intro">
+        <div>
+          <h1>Build a supply <em>crate.</em></h1>
+          <p class="lead">
+            Pick a colour, compare your builds, and take your favourite into
+            Blender or Godot.
+          </p>
+        </div>
+      </section>
+      <div class="workspace">
+        <section class="panel builder" aria-labelledby="build-title">
+          <h2 id="build-title">Pick your colour</h2>
+          <form id="build-form">
+            <fieldset>
+              <legend>Shell colour</legend>
+              <div class="palette" id="palette">
+                <label class="swatch"
+                  ><input
+                    type="radio"
+                    name="palette"
+                    value="#74D6B3"
+                    checked
+                  /><span style="--swatch: #74d6b3"></span><b>Mint</b></label
+                >
+                <label class="swatch"
+                  ><input type="radio" name="palette" value="#E5A34A" /><span
+                    style="--swatch: #e5a34a"
+                  ></span
+                  ><b>Amber</b></label
+                >
+                <label class="swatch"
+                  ><input type="radio" name="palette" value="#7498C7" /><span
+                    style="--swatch: #7498c7"
+                  ></span
+                  ><b>Slate blue</b></label
+                >
+                <label class="swatch"
+                  ><input type="radio" name="palette" value="#C47E81" /><span
+                    style="--swatch: #c47e81"
+                  ></span
+                  ><b>Dusty rose</b></label
+                >
+                <label class="swatch"
+                  ><input type="radio" name="palette" value="#A4B36F" /><span
+                    style="--swatch: #a4b36f"
+                  ></span
+                  ><b>Moss</b></label
+                >
+                <label class="swatch"
+                  ><input type="radio" name="palette" value="custom" /><span
+                    class="custom-swatch"
+                    >+</span
+                  ><b>Custom</b></label
+                >
+              </div>
+            </fieldset>
+            <div class="field-row">
+              <div class="field">
+                <label for="hex">Custom hex colour</label>
+                <div class="hex-control">
+                  <input
+                    id="picker"
+                    type="color"
+                    value="#74d6b3"
+                    aria-label="Choose a custom colour"
+                  /><input
+                    id="hex"
+                    type="text"
+                    value="#74D6B3"
+                    maxlength="7"
+                    spellcheck="false"
+                    aria-describedby="hex-help"
+                  /><span>HEX</span>
+                </div>
+                <small id="hex-help"
+                  >Use # and six characters, like #74D6B3.</small
+                >
+              </div>
+              <div class="field">
+                <label for="label"
+                  >Name <span class="optional">optional</span></label
+                ><input
+                  id="label"
+                  type="text"
+                  maxlength="32"
+                  placeholder="e.g. Forest scout"
+                /><small>Up to 32 characters.</small>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="primary" id="build-colour" type="submit">
+                Build my colour <span>↗</span></button
+              ><button class="secondary" id="build-script" type="button">
+                Build from script
+              </button>
+            </div>
+            <p class="hint">
+              The script build uses the colour currently in the Blender recipe.
+            </p>
+          </form>
+          <div class="status" id="status" role="status" aria-live="polite">
+            Connecting to the workshop…
+          </div>
+          <details id="diagnostics" hidden>
+            <summary>Technical details</summary>
+            <pre id="details-text"></pre>
+            <button type="button" class="secondary" id="copy-error">
+              Copy build details
+            </button>
+            <p class="hint" id="error-copy-status" role="status"></p>
+          </details>
+        </section>
+        <section class="panel showcase" aria-labelledby="latest-heading">
+          <h2 id="latest-heading">Latest crate</h2>
+          <div id="latest-preview" class="preview">
+            <p>Build a crate to see it here.</p>
+          </div>
+          <p id="latest-caption" class="compare-caption" hidden></p>
+        </section>
+      </div>
+      <section class="compare-section" aria-labelledby="compare-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="compare-title">Compare your crates</h2>
+            <p class="muted">
+              Choose two builds and switch views to see both sides.
+            </p>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Preview side">
+            <button type="button" data-view="front" aria-pressed="true">
+              Front</button
+            ><button type="button" data-view="back" aria-pressed="false">
+              Back
+            </button>
+          </div>
+        </div>
+        <div class="comparison" id="comparison"></div>
+        <p class="hint" id="path-status" role="status" aria-live="polite"></p>
+      </section>
+      <section class="panel history" aria-labelledby="history-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="history-title">Build history</h2>
+            <p class="muted">
+              Each build has its own folder. Earlier versions stay put.
+            </p>
+          </div>
+          <span id="run-count" class="count">0 RUNS</span>
+        </div>
+        <div id="runs" class="runs"></div>
+      </section>
+      <section class="handoff">
+        <div class="panel godot">
+          <h2>Import into Godot</h2>
+          <ol>
+            <li>
+              Download a GLB, then copy it into your Godot project folder using
+              your file manager.
+            </li>
+            <li>
+              In Godot, drag the imported GLB from the FileSystem panel into a
+              Node3D scene.
+            </li>
+            <li>
+              Add collision in Godot if your game needs it. This asset has none.
+            </li>
+          </ol>
+        </div>
+        <div class="panel prompts">
+          <h2>Work with an AI</h2>
+          <p class="muted">
+            Use a coding agent with terminal access to explore the recipe, or
+            brainstorm a colour in any AI chat.
+          </p>
+          <div class="prompt-actions">
+            <button type="button" class="secondary" id="copy-agent">
+              Copy coding agent prompt</button
+            ><button type="button" class="secondary" id="copy-ideas">
+              Copy colour ideas prompt
+            </button>
+          </div>
+          <p class="hint" id="copy-status" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

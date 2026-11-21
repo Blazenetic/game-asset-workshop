@@ -1,0 +1,44 @@
+name: Publish tutorial
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Package the static tutorial
+        run: |
+          mkdir -p "$RUNNER_TEMP/tutorial/media"
+          cp web/index.html web/guide.css web/guide.js "$RUNNER_TEMP/tutorial/"
+          cp web/media/*.webp "$RUNNER_TEMP/tutorial/media/"
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/tutorial
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

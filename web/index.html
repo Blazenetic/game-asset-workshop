@@ -1,0 +1,1201 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Pick a game prop, learn to direct an AI agent or build it by hand, and bring it into Godot."
+    />
+    <meta property="og:title" content="Game Asset Workshop" />
+    <meta
+      property="og:description"
+      content="Pick a prop, try the Prompt Lab, and make your first game asset in Blender."
+    />
+    <meta property="og:type" content="website" />
+    <title>Game Asset Workshop</title>
+    <link rel="stylesheet" href="./guide.css" />
+    <script src="./guide.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to workshop</a>
+    <header class="masthead">
+      <div class="wrap toolbar">
+        <a class="brand" href="#main"
+          ><span aria-hidden="true">✳</span> Game Asset Workshop</a
+        >
+        <nav aria-label="Quick links">
+          <a href="#missions">Missions</a><a href="#prompt-lab">Prompt Lab</a
+          ><a href="#field-kit">Field kit</a>
+        </nav>
+        <div class="hud">
+          <a
+            id="hud-progress"
+            href="#progress"
+            class="hud-count"
+            aria-label="0 of 5 checkpoints complete"
+            >0 / 5</a
+          >
+          <button id="theme" type="button">Light mode</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="hero wrap" aria-labelledby="hero-heading">
+        <div class="hero-content">
+          <p class="kicker">Blender × AI × Godot</p>
+          <h1 id="hero-heading">Make your first<br /><em>game prop.</em></h1>
+          <p class="hero-copy">
+            Pick something you'd want in your game. Give an agent a brief or
+            build it by hand, then get it into a scene you can play.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#contracts"
+              >Pick a prop <span aria-hidden="true">↘</span></a
+            >
+            <a class="button secondary" href="#setup">Set up Blender + AI</a>
+            <a class="button lab-link" href="#prompt-lab">Open Prompt Lab ↓</a>
+          </div>
+        </div>
+        <figure class="viewport">
+          <div class="viewport-bar">
+            <span class="viewport-title">Prop viewport</span
+            ><span id="hero-name">Rescue crate</span>
+          </div>
+          <div class="stage">
+            <span class="axis" aria-hidden="true"
+              ><b>X</b><b>Y</b><b>Z</b></span
+            >
+            <img
+              id="hero-image"
+              src="./media/field-crate.webp"
+              alt="Low-poly teal supply crate with amber latches"
+              width="640"
+              height="448"
+            />
+          </div>
+          <figcaption class="viewport-footer">
+            <span id="hero-caption">Field teal · Blender render</span>
+            <div class="segments" role="group" aria-label="Preview version">
+              <button type="button" data-variant="0" aria-pressed="true">
+                V1
+              </button>
+              <button type="button" data-variant="1" aria-pressed="false">
+                V2
+              </button>
+            </div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section
+        id="contracts"
+        class="wrap contracts"
+        aria-labelledby="contracts-heading"
+      >
+        <div class="section-heading">
+          <div>
+            <h2 id="contracts-heading">Pick a prop</h2>
+            <p>
+              Three builds, three skills. Choose one to follow through the
+              workshop.
+            </p>
+          </div>
+          <a href="#first-prop">See your brief ↓</a>
+        </div>
+        <div class="contract-grid" role="group" aria-label="Prop choices">
+          <button
+            type="button"
+            class="contract"
+            data-prop="crate"
+            aria-pressed="true"
+          >
+            <img
+              src="./media/field-crate.webp"
+              alt=""
+              width="640"
+              height="448"
+            />
+            <span class="contract-info"
+              ><small>Starter · Shape and proportion</small
+              ><strong>Rescue crate</strong
+              ><span>Make loot stand out across a room.</span></span
+            >
+            <span aria-hidden="true" class="contract-arrow">↗</span>
+          </button>
+          <button
+            type="button"
+            class="contract"
+            data-prop="lantern"
+            aria-pressed="false"
+          >
+            <img
+              src="./media/forest-lantern.webp"
+              alt=""
+              width="640"
+              height="448"
+            />
+            <span class="contract-info"
+              ><small>Intermediate · Materials and silhouette</small
+              ><strong>Twilight lantern</strong
+              ><span>Give a forest camp a beacon.</span></span
+            >
+            <span aria-hidden="true" class="contract-arrow">↗</span>
+          </button>
+          <button
+            type="button"
+            class="contract"
+            data-prop="cell"
+            aria-pressed="false"
+          >
+            <img
+              src="./media/orbital-battery.webp"
+              alt=""
+              width="640"
+              height="448"
+            />
+            <span class="contract-info"
+              ><small>Challenge · Details for the game camera</small
+              ><strong>Orbital power cell</strong
+              ><span>Make a pickup that reads from above.</span></span
+            >
+            <span aria-hidden="true" class="contract-arrow">↗</span>
+          </button>
+        </div>
+        <p id="prop-status" class="feedback" role="status"></p>
+      </section>
+
+      <div id="missions" class="wrap course">
+        <nav class="chapters" aria-label="Tutorial missions">
+          <strong>Mission log</strong>
+          <ol>
+            <li><a href="#setup">Set up your tools</a></li>
+            <li><a href="#first-prop">Draft a prop</a></li>
+            <li><a href="#prompt-lab">Prompt Lab</a></li>
+            <li><a href="#iterate">Patch one thing</a></li>
+            <li><a href="#godot">Playtest in Godot</a></li>
+          </ol>
+          <a href="#progress">View checkpoints</a>
+        </nav>
+
+        <div class="lessons">
+          <section id="setup" class="lesson" aria-labelledby="setup-heading">
+            <div class="lesson-head">
+              <span class="mission-number" aria-hidden="true">01</span>
+              <div>
+                <h2 id="setup-heading">Set up your tools</h2>
+                <p>Get your bench ready before an agent touches a file.</p>
+              </div>
+            </div>
+            <div class="step-grid">
+              <div>
+                <h3>Install Blender</h3>
+                <p>
+                  Pick your operating system. Open Blender once to check it
+                  starts.
+                </p>
+                <a href="https://www.blender.org/download/"
+                  >Download Blender ↗</a
+                >
+              </div>
+              <div>
+                <h3>Make a practice folder</h3>
+                <p>
+                  Call it <code>my-first-prop</code>. Keep it outside your game
+                  project and open this folder in your agent.
+                </p>
+              </div>
+            </div>
+            <div class="tool-map">
+              <h3>How the tools fit together</h3>
+              <dl class="tool-roles">
+                <div>
+                  <dt>AI model</dt>
+                  <dd>
+                    Plans the prop and drafts instructions or code. The models
+                    in this guide usually run online through your provider
+                    account.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Agent harness</dt>
+                  <dd>
+                    A program such as Codex or Claude Code. It gives the model
+                    tools to read the practice folder, edit files and run
+                    commands within your permissions.
+                  </dd>
+                </div>
+                <div>
+                  <dt>T3 Code</dt>
+                  <dd>
+                    An optional app for opening projects, starting conversations
+                    called threads and reviewing work from agents you connect.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Blender</dt>
+                  <dd>
+                    Builds and displays the asset. Open it yourself to check the
+                    result and make it your own.
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <h3>Pick how you’ll work</h3>
+            <div class="route-choices" role="group" aria-label="Workflow">
+              <button type="button" data-route="agent" aria-pressed="true">
+                Agent on my computer
+              </button>
+              <button type="button" data-route="chat" aria-pressed="false">
+                Chat AI + Blender
+              </button>
+              <button type="button" data-route="solo" aria-pressed="false">
+                Solo · no account
+              </button>
+            </div>
+            <p id="route-note">
+              The agent program uses the files and tools you allow on this
+              computer. The model usually runs online through your provider
+              account. Open your practice folder in one of the tools below.
+            </p>
+            <div id="agent-setup">
+              <div
+                class="provider-tabs"
+                role="tablist"
+                aria-label="Choose an AI tool"
+              >
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-codex"
+                  aria-selected="true"
+                  aria-controls="provider-codex"
+                >
+                  Codex
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-claude"
+                  aria-selected="false"
+                  aria-controls="provider-claude"
+                  tabindex="-1"
+                >
+                  Claude Code <small>18+</small>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-antigravity"
+                  aria-selected="false"
+                  aria-controls="provider-antigravity"
+                  tabindex="-1"
+                >
+                  Antigravity <small>18+</small>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-grok"
+                  aria-selected="false"
+                  aria-controls="provider-grok"
+                  tabindex="-1"
+                >
+                  Grok Build
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-t3"
+                  aria-selected="false"
+                  aria-controls="provider-t3"
+                  tabindex="-1"
+                >
+                  T3 Code
+                </button>
+              </div>
+              <div
+                class="provider-panel"
+                role="tabpanel"
+                id="provider-codex"
+                aria-labelledby="tab-codex"
+              >
+                <p>
+                  Codex is an agent that can work with files and commands in
+                  your practice folder.
+                </p>
+                <ol class="steps">
+                  <li>
+                    Install the CLI for your system using the guide below.
+                  </li>
+                  <li>
+                    Open a terminal in <code>my-first-prop</code> (see terminal
+                    help below).
+                  </li>
+                  <li>
+                    Run <code>codex</code> in that terminal and sign in. Check
+                    its permission settings before asking it to build anything.
+                  </li>
+                </ol>
+                <p>
+                  Using the desktop app? Open the same folder as a local Codex
+                  project.
+                </p>
+                <div class="resource-links">
+                  <a href="https://learn.chatgpt.com/docs/codex/cli"
+                    >CLI install and sign-in ↗</a
+                  ><a href="https://learn.chatgpt.com/docs/app"
+                    >Desktop app guide ↗</a
+                  ><a href="https://openai.com/policies/terms-of-use/"
+                    >Account terms ↗</a
+                  >
+                </div>
+              </div>
+              <div
+                class="provider-panel"
+                role="tabpanel"
+                id="provider-claude"
+                aria-labelledby="tab-claude"
+                hidden
+              >
+                <p>
+                  Claude Code is a terminal agent that can help build and
+                  inspect files. Claude Code requires an eligible account; check
+                  the age and availability terms below.
+                </p>
+                <ol class="steps">
+                  <li>Install Claude Code using the quickstart.</li>
+                  <li>Open a terminal in <code>my-first-prop</code>.</li>
+                  <li>
+                    In the terminal, run <code>claude</code>, sign in, and
+                    review its permission settings.
+                  </li>
+                </ol>
+                <div class="resource-links">
+                  <a href="https://code.claude.com/docs/en/quickstart"
+                    >Claude Code quickstart ↗</a
+                  ><a
+                    href="https://support.claude.com/en/articles/8114491-get-started-with-claude"
+                    >Claude eligibility ↗</a
+                  >
+                </div>
+              </div>
+              <div
+                class="provider-panel"
+                role="tabpanel"
+                id="provider-antigravity"
+                aria-labelledby="tab-antigravity"
+                hidden
+              >
+                <p>
+                  Antigravity is an agent workspace for projects. Check the age,
+                  account and regional eligibility below.
+                </p>
+                <ol class="steps">
+                  <li>Install and sign in using the quickstart.</li>
+                  <li>
+                    Open <code>my-first-prop</code> as a project in the desktop
+                    app.
+                  </li>
+                  <li>
+                    Start an agent session and review its permission settings.
+                    For the CLI, run <code>agy</code> in the folder’s terminal.
+                  </li>
+                </ol>
+                <div class="resource-links">
+                  <a href="https://antigravity.google/docs/getting-started"
+                    >Antigravity quickstart ↗</a
+                  ><a href="https://antigravity.google/docs/faq"
+                    >Eligibility and availability ↗</a
+                  >
+                </div>
+              </div>
+              <div
+                class="provider-panel"
+                role="tabpanel"
+                id="provider-grok"
+                aria-labelledby="tab-grok"
+                hidden
+              >
+                <p>
+                  Grok Build is an agent for working with a local project, where
+                  available to your account.
+                </p>
+                <ol class="steps">
+                  <li>Check access and install using the quickstart.</li>
+                  <li>Open a terminal in <code>my-first-prop</code>.</li>
+                  <li>
+                    In the terminal, run <code>grok</code>, sign in, and review
+                    its permission settings. For Grok chat, choose the chat
+                    route instead.
+                  </li>
+                </ol>
+                <div class="resource-links">
+                  <a href="https://docs.x.ai/build/overview"
+                    >Grok Build quickstart ↗</a
+                  ><a href="https://x.ai/legal/terms-of-service"
+                    >Account terms ↗</a
+                  >
+                </div>
+              </div>
+              <div
+                class="provider-panel"
+                role="tabpanel"
+                id="provider-t3"
+                aria-labelledby="tab-t3"
+                hidden
+              >
+                <p>
+                  T3 Code can run Codex, Claude Code, Antigravity or Grok Build
+                  from the same workspace. Start with one. These steps use Codex
+                  and require a ChatGPT account with Codex access.
+                </p>
+                <ol class="steps">
+                  <li>
+                    <strong>Open T3 Code.</strong> Install the desktop app on
+                    the computer where you installed Blender.
+                  </li>
+                  <li>
+                    <strong>Connect Codex.</strong> On the Welcome screen, find
+                    Codex and choose
+                    <strong>Set up → Continue with ChatGPT</strong>. Sign in and
+                    grant access to your plan. Choose
+                    <strong>Start</strong> when Codex is ready. If you’ve
+                    already passed Welcome, use
+                    <strong>Settings → Providers → Connect with ChatGPT</strong
+                    >.
+                  </li>
+                  <li>
+                    <strong>Open your project.</strong> Drag
+                    <code>my-first-prop</code> onto the desktop app’s sidebar. A
+                    plain folder works for this lesson.
+                  </li>
+                  <li>
+                    <strong>Choose your permissions.</strong> Start a thread in
+                    that project and select Codex. A fresh installation starts
+                    new threads in <strong>Full access</strong>, which allows
+                    commands and file edits without approval prompts. Before
+                    sending anything, use <strong>Permissions</strong> in the
+                    message box’s model picker and select
+                    <strong>Supervised</strong>.
+                  </li>
+                  <li>
+                    <strong>Check the connection.</strong> Paste the check below
+                    into the thread. If T3 asks to run
+                    <code>blender --version</code>, read the command before
+                    approving it. Look for your practice folder and a Blender
+                    version in the reply.
+                  </li>
+                </ol>
+                <details class="drawer">
+                  <summary>Use a Codex CLI you’ve already set up</summary>
+                  <p>
+                    Choose <strong>Use existing CLI</strong> on the Welcome
+                    screen. If you need to sign in, run
+                    <code>codex login</code> in a terminal on the computer with
+                    Blender. After Welcome, you can add a Codex instance in
+                    <strong>Settings → Providers</strong> and choose
+                    <strong>Configure manually</strong>. Select that Codex
+                    instance in the thread’s model picker.
+                  </p>
+                </details>
+                <details class="drawer">
+                  <summary>Stuck in T3 Code?</summary>
+                  <ul>
+                    <li>
+                      <strong>Codex is missing.</strong> Check the account under
+                      <strong>Settings → Providers</strong>. For a manual setup,
+                      check the <strong>Binary path</strong> setting in the
+                      Codex provider.
+                    </li>
+                    <li>
+                      <strong>Blender is missing.</strong> Check which computer
+                      the thread is running on. Use the Blender path help below.
+                    </li>
+                    <li>
+                      <strong
+                        >You want the agent to inspect an open scene.</strong
+                      >
+                      Use the optional MCP guide below for that connection.
+                    </li>
+                  </ul>
+                </details>
+                <div class="resource-links">
+                  <a href="https://t3.codes/download">Download T3 Code ↗</a>
+                  <a
+                    href="https://github.com/pingdotgg/t3code/blob/main/docs/user/install.md"
+                    >T3 install guide ↗</a
+                  >
+                  <a
+                    href="https://github.com/pingdotgg/t3code/blob/main/docs/user/providers-codex.md"
+                    >Codex in T3 ↗</a
+                  >
+                  <a href="https://github.com/pingdotgg/t3code#install"
+                    >T3 project ↗</a
+                  >
+                  <a
+                    href="https://github.com/pingdotgg/t3code/blob/main/docs/user/welcome-page.md"
+                    >Welcome screen ↗</a
+                  >
+                  <a
+                    href="https://github.com/pingdotgg/t3code/blob/main/docs/user/permission-modes.md"
+                    >Permission modes ↗</a
+                  >
+                  <a href="https://openai.com/policies/terms-of-use/"
+                    >ChatGPT account terms ↗</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div id="connection">
+              <h3>Try the connection check</h3>
+              <p>
+                Paste this into your agent’s chat or thread. Check that its
+                reply names your practice folder and gives a Blender version.
+              </p>
+              <div class="copy-box">
+                <pre id="setup-prompt">
+Confirm which practice folder you are using. Run blender --version and report the output. If Blender isn't found, help me locate its executable. Ask before installing anything or changing settings.</pre
+                >
+                <button type="button" data-copy="setup-prompt">
+                  Copy connection check
+                </button>
+              </div>
+            </div>
+            <div id="chat-connection" hidden>
+              <h3>Tell chat which Blender you use</h3>
+              <p>
+                Find your version on Blender’s splash screen or under
+                <strong>Help → About Blender</strong>. Replace the bracketed
+                text before sending the prompt.
+              </p>
+              <div class="copy-box">
+                <pre id="chat-setup-prompt">
+I’m using Blender [version] on [Windows, macOS or Linux]. Help me make a simple game prop by hand. Give me numbered steps with menu names that match my version. Pause after each stage so I can check the result.</pre
+                >
+                <button type="button" data-copy="chat-setup-prompt">
+                  Copy chat setup prompt
+                </button>
+              </div>
+            </div>
+            <details class="drawer">
+              <summary>Terminal help and the Blender path</summary>
+              <ul>
+                <li>
+                  <strong>Windows:</strong> Open the folder in File Explorer.
+                  Type <code>powershell</code> in the address bar and press
+                  Enter.
+                </li>
+                <li>
+                  <strong>macOS:</strong> Type <code>cd</code> and a space in
+                  Terminal. Drag in the folder from Finder and press Enter.
+                </li>
+                <li>
+                  <strong>Linux:</strong> Look for
+                  <strong>Open in Terminal</strong> in the folder’s right-click
+                  menu.
+                </li>
+              </ul>
+              <p>
+                If <code>blender</code> isn't found, use its full path. On macOS
+                look inside <code>Blender.app/Contents/MacOS/Blender</code>. On
+                Windows, find <code>blender.exe</code> in the install folder. In
+                PowerShell use
+                <code>&amp; "C:\path\to\blender.exe" --version</code>, replacing
+                the example path with yours.
+              </p>
+              <a
+                href="https://docs.blender.org/manual/en/latest/advanced/command_line/"
+                >Blender terminal guide ↗</a
+              >
+            </details>
+            <details class="drawer">
+              <summary>
+                Optional: inspect an open Blender scene with MCP
+              </summary>
+              <p>
+                MCP lets an agent call tools in another app. This community
+                add-on can modify your open Blender scene. Try it in an empty
+                practice scene on your own computer.
+              </p>
+              <ol class="steps">
+                <li>
+                  Use the
+                  <a href="https://github.com/ahujasid/mcp-for-blender"
+                    >MCP for Blender project guide</a
+                  >
+                  to install the prerequisites and add-on.
+                </li>
+                <li>
+                  Press <kbd>N</kbd> in Blender’s 3D View, open its add-on tab
+                  and start the connection.
+                </li>
+                <li>
+                  For Codex CLI run
+                  <code>codex mcp add blender -- uvx mcp-for-blender</code> and
+                  start a fresh session. See the add-on guide for Claude. Use
+                  the
+                  <a href="https://antigravity.google/docs/mcp">Antigravity</a>
+                  and
+                  <a href="https://docs.x.ai/build/features/mcp-servers"
+                    >Grok Build</a
+                  >
+                  docs for their client setup.
+                </li>
+                <li>
+                  Paste the read-only request below into the agent and compare
+                  its answer with Blender’s Outliner.
+                </li>
+              </ol>
+              <p>
+                MCP connects an agent to tools in a running app. It is optional;
+                the background Blender route does not need it. The client,
+                server and Blender must be connected as described in the add-on
+                guide.
+              </p>
+              <div class="copy-box">
+                <pre id="mcp-prompt">
+List the objects in the current Blender scene. Do not add, change, delete or save anything.</pre
+                >
+                <button type="button" data-copy="mcp-prompt">
+                  Copy read-only request
+                </button>
+              </div>
+            </details>
+            <label class="checkpoint"
+              ><input type="checkbox" data-check="setup" /><span
+                ><strong>Bench ready</strong
+                ><small>I opened Blender and checked my route.</small></span
+              ></label
+            >
+          </section>
+
+          <section
+            id="first-prop"
+            class="lesson"
+            aria-labelledby="first-heading"
+          >
+            <div class="lesson-head">
+              <span class="mission-number" aria-hidden="true">02</span>
+              <div>
+                <h2 id="first-heading">Draft a prop</h2>
+                <p>
+                  Give your prop a job in the game. Then decide which detail
+                  sells it.
+                </p>
+              </div>
+            </div>
+            <div class="brief-card">
+              <div>
+                <h3 id="brief-name">Rescue crate</h3>
+                <p id="brief-world">
+                  Make loot stand out in a dim mountain rescue shelter.
+                </p>
+              </div>
+              <div id="brief-spec" class="technical">
+                1.2 m wide · up to 1,000 triangles
+              </div>
+              <p class="twist" id="brief-twist">
+                Your call: bright latches or a chunky handle?
+              </p>
+            </div>
+            <ol class="steps" id="build-steps">
+              <li>
+                Save any work open in Blender. Paste the brief into your agent’s
+                practice folder session.
+              </li>
+              <li>
+                Read the plan and file paths. Ask about anything unclear before
+                approving the build.
+              </li>
+              <li>
+                Open the new <code>.blend</code>. Orbit around it and switch to
+                Material Preview.
+              </li>
+            </ol>
+            <div class="copy-box">
+              <pre id="first-prompt">
+Plan a rescue crate for a dim mountain shelter. Make it 1.2 m wide with a chunky handle and amber latches. Keep it under 1,000 triangles and check that its base sits flat.</pre
+              >
+              <button id="copy-first" type="button" data-copy="first-prompt">
+                Copy prop brief
+              </button>
+            </div>
+            <details class="drawer" id="manual">
+              <summary>Block it out by hand in Blender</summary>
+              <p>
+                A blockout uses simple shapes to test size and silhouette before
+                you add details. Open a new General file. Press <kbd>N</kbd> in
+                the 3D View and use <strong>Item</strong> for dimensions and
+                location.
+              </p>
+              <ol class="steps" id="manual-steps">
+                <li>
+                  Set the cube’s dimensions to 1.2 × 0.8 × 0.8 m and its Z
+                  location to 0.4 m.
+                </li>
+                <li>
+                  Add a second cube for the lid. Set its dimensions to 1.26 ×
+                  0.86 × 0.12 m and its Z location to 0.86 m.
+                </li>
+                <li>
+                  Orbit the crate. Check the overhang from the side and save it
+                  as <code>crate-v1.blend</code>.
+                </li>
+              </ol>
+            </details>
+            <button
+              class="button secondary use-brief"
+              type="button"
+              id="use-brief"
+            >
+              Remix this brief in the lab <span aria-hidden="true">↘</span>
+            </button>
+            <label class="checkpoint"
+              ><input type="checkbox" data-check="prop" /><span
+                ><strong>First pass</strong
+                ><small
+                  >I opened my prop and checked it from two angles.</small
+                ></span
+              ></label
+            >
+          </section>
+
+          <section
+            id="prompt-lab"
+            class="lesson lab"
+            aria-labelledby="lab-heading"
+          >
+            <div class="lesson-head">
+              <span class="mission-number" aria-hidden="true">03</span>
+              <div>
+                <h2 id="lab-heading">Prompt Lab</h2>
+                <p>Make it specific enough that you can tell when it worked.</p>
+              </div>
+            </div>
+            <details class="drawer challenge" open>
+              <summary>Quick challenge: pick the stronger brief</summary>
+              <div class="challenge-options">
+                <button type="button" data-answer="vague" aria-pressed="false">
+                  Make a cool crate.
+                </button>
+                <button
+                  type="button"
+                  data-answer="specific"
+                  aria-pressed="false"
+                >
+                  Make a crate with amber latches I can spot across a dark room.
+                </button>
+              </div>
+              <p id="challenge-feedback" class="feedback" role="status"></p>
+            </details>
+            <div class="lab-head">
+              <h3>Shape your brief</h3>
+              <button type="button" id="load-brief">
+                Load rescue crate brief
+              </button>
+            </div>
+            <p>
+              Start with a prop, then change a detail and see how it affects the
+              draft. Use the load button to replace the fields with the selected
+              prop’s starter brief.
+            </p>
+            <div class="lab-grid">
+              <form id="brief">
+                <div class="fields">
+                  <label
+                    >Game world <span>Where does it belong?</span
+                    ><input id="world" maxlength="120"
+                  /></label>
+                  <label
+                    >Prop and purpose
+                    <span>How does a player use or spot it?</span
+                    ><input id="prop" maxlength="160"
+                  /></label>
+                  <label
+                    >Look and size
+                    <span>Describe a shape, material or measurement.</span
+                    ><textarea id="look" rows="3" maxlength="280"></textarea>
+                  </label>
+                  <div>
+                    <span class="chip-label" id="look-label"
+                      >Looks for the rescue crate</span
+                    >
+                    <div id="look-chips" class="look-chips"></div>
+                  </div>
+                  <label
+                    >How you’ll check it
+                    <span>Name something you can see or measure.</span
+                    ><textarea id="checks" rows="3" maxlength="280"></textarea>
+                  </label>
+                </div>
+                <ul class="spec-meter" aria-label="Brief ingredients">
+                  <li data-spec="world">World</li>
+                  <li data-spec="prop">Purpose</li>
+                  <li data-spec="look">Look and size</li>
+                  <li data-spec="checks">Check</li>
+                </ul>
+                <p id="spec-status" class="feedback" role="status"></p>
+                <p class="hint">
+                  Use these hints to make your instructions more specific. Check
+                  the result yourself in Blender.
+                </p>
+                <label
+                  >Output for<select id="route">
+                    <option value="agent">Agent on my computer</option>
+                    <option value="chat">Chat AI</option>
+                    <option value="solo">My own build checklist</option>
+                  </select></label
+                >
+              </form>
+              <div id="draft-panel">
+                <label for="draft"
+                  >Live draft <span>Edit it directly if you like.</span></label
+                >
+                <textarea id="draft" rows="15"></textarea>
+                <p id="draft-mode" class="hint">
+                  Live: field changes update this draft.
+                </p>
+                <div class="draft-buttons">
+                  <button type="button" data-copy="draft">Copy draft</button
+                  ><button type="button" id="rebuild-draft" hidden>
+                    Rebuild from fields
+                  </button>
+                  <button type="button" id="undo-rebuild" hidden>
+                    Undo rebuild
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p id="lab-status" class="feedback" role="status"></p>
+            <label class="checkpoint"
+              ><input type="checkbox" data-check="lab" /><span
+                ><strong>Art director</strong
+                ><small
+                  >I wrote a brief with a way to check the result.</small
+                ></span
+              ></label
+            >
+          </section>
+
+          <section
+            id="iterate"
+            class="lesson"
+            aria-labelledby="iterate-heading"
+          >
+            <div class="lesson-head">
+              <span class="mission-number" aria-hidden="true">04</span>
+              <div>
+                <h2 id="iterate-heading">Patch one thing</h2>
+                <p>
+                  Change one detail per pass and you’ll know what made the
+                  difference.
+                </p>
+              </div>
+            </div>
+            <div class="comparison-controls">
+              <strong id="compare-name">Rescue crate</strong>
+              <div class="segments" role="group" aria-label="Game backdrop">
+                <button type="button" data-backdrop="dim" aria-pressed="true">
+                  Dim room</button
+                ><button
+                  type="button"
+                  data-backdrop="snow"
+                  aria-pressed="false"
+                >
+                  Snow</button
+                ><button
+                  type="button"
+                  data-backdrop="forest"
+                  aria-pressed="false"
+                >
+                  Forest
+                </button>
+              </div>
+            </div>
+            <div class="comparison" id="comparison" data-backdrop="dim">
+              <figure>
+                <img
+                  id="compare-before"
+                  src="./media/field-crate.webp"
+                  alt="Supply crate with a teal shell"
+                  width="640"
+                  height="448"
+                  loading="lazy"
+                />
+                <figcaption id="before-caption">V1 · Field teal</figcaption>
+              </figure>
+              <figure>
+                <img
+                  id="compare-after"
+                  src="./media/signal-crate.webp"
+                  alt="Supply crate with a signal red shell"
+                  width="640"
+                  height="448"
+                  loading="lazy"
+                />
+                <figcaption id="after-caption">V2 · Signal red</figcaption>
+              </figure>
+            </div>
+            <p class="compare-note" id="inspect-tip">
+              Try both shells against a snowy backdrop. Which would you spot
+              first at player distance?
+            </p>
+            <div class="step-grid">
+              <div>
+                <h3>Find the flaw</h3>
+                <p>
+                  Look from the game camera angle. Check the outline, materials
+                  and contact with the floor.
+                </p>
+              </div>
+              <div>
+                <h3>Lock what works</h3>
+                <p>
+                  Name what should stay the same. Save the revision separately
+                  and compare before choosing.
+                </p>
+              </div>
+            </div>
+            <details class="drawer">
+              <summary>Quick challenge: choose a patch you can test</summary>
+              <div class="challenge-options">
+                <button
+                  type="button"
+                  data-revision-choice="broad"
+                  aria-pressed="false"
+                >
+                  Give it a redesign and add more detail.
+                </button>
+                <button
+                  type="button"
+                  data-revision-choice="focused"
+                  aria-pressed="false"
+                >
+                  Change just the colour. Keep the size and shape.
+                </button>
+              </div>
+              <p id="patch-feedback" class="feedback" role="status"></p>
+            </details>
+            <div class="drawer revision">
+              <h3>Try a one-change revision</h3>
+              <div class="copy-box">
+                <pre id="revise-prompt">
+Try a signal red shell and keep the crate’s shape, size and amber latches. Save the revision separately and re-import the GLB to check that the colour carried through.</pre
+                >
+                <button type="button" data-copy="revise-prompt">
+                  Copy revision brief
+                </button>
+              </div>
+            </div>
+            <label class="checkpoint"
+              ><input type="checkbox" data-check="revise" /><span
+                ><strong>One clean patch</strong
+                ><small>I can explain what changed and why.</small></span
+              ></label
+            >
+          </section>
+
+          <section id="godot" class="lesson" aria-labelledby="godot-heading">
+            <div class="lesson-head">
+              <span class="mission-number" aria-hidden="true">05</span>
+              <div>
+                <h2 id="godot-heading">Playtest in Godot</h2>
+                <p>
+                  Keep the <code>.blend</code> as your editable original. Bring
+                  the <code>.glb</code> into your game.
+                </p>
+              </div>
+            </div>
+            <ol class="steps">
+              <li>
+                <strong>Export.</strong> Select the prop meshes in Blender.
+                Under <strong>File → Export → glTF 2.0</strong>, choose GLB and
+                export selected objects so the default camera and light stay out
+                of the asset.
+              </li>
+              <li>
+                <strong>Drop it into a scene.</strong> Copy the GLB into a Godot
+                4 project. Drag it from <strong>FileSystem</strong> into a 3D
+                scene.
+              </li>
+              <li>
+                <strong>Test it at player scale.</strong> With Blender’s default
+                glTF axis conversion, a base at Blender Z = 0 should sit at
+                Godot Y = 0. Compare the prop with your player and check its
+                material in the scene lighting.
+              </li>
+            </ol>
+            <p id="godot-tip" class="note">
+              If the crate should block the player, put a collision shape under
+              a <code>StaticBody3D</code>. The GLB gives you the visible mesh.
+            </p>
+            <details class="drawer">
+              <summary>Should the prop block, move or detect?</summary>
+              <ul>
+                <li><code>StaticBody3D</code> for cover that stays put.</li>
+                <li>
+                  <code>Area3D</code> for a pickup or trigger that detects the
+                  player.
+                </li>
+                <li>
+                  <code>RigidBody3D</code> for something the player can knock
+                  around.
+                </li>
+              </ul>
+              <p>
+                Add a <code>CollisionShape3D</code> to the body or area. Use a
+                simple box or cylinder for this first test.
+              </p>
+            </details>
+            <label class="checkpoint"
+              ><input type="checkbox" data-check="godot" /><span
+                ><strong>In the game</strong
+                ><small
+                  >I checked scale and materials in a Godot scene.</small
+                ></span
+              ></label
+            >
+          </section>
+
+          <section id="field-kit" class="lesson" aria-labelledby="kit-heading">
+            <h2 id="kit-heading">Field kit</h2>
+            <p>Keep this open beside Blender when you get stuck.</p>
+            <details class="drawer" open>
+              <summary>Find your way around Blender</summary>
+              <dl class="keys">
+                <div>
+                  <dt>Middle mouse drag</dt>
+                  <dd>Orbit around the prop.</dd>
+                </div>
+                <div>
+                  <dt>Scroll</dt>
+                  <dd>Zoom in and out.</dd>
+                </div>
+                <div>
+                  <dt>View → Frame Selected</dt>
+                  <dd>Find the prop if you lose it.</dd>
+                </div>
+                <div>
+                  <dt><kbd>Z</kbd> → Material Preview</dt>
+                  <dd>See the surface colours.</dd>
+                </div>
+                <div>
+                  <dt><kbd>N</kbd> → Item</dt>
+                  <dd>Check dimensions and location.</dd>
+                </div>
+              </dl>
+            </details>
+            <details class="drawer">
+              <summary>Fix a floating, translucent or oversized prop</summary>
+              <div class="copy-box">
+                <pre id="fix-ground">
+Check the lowest point of the prop’s mesh in Blender. Move the whole prop so it rests at Z = 0, keep the parts aligned, and export a new GLB. Tell me what changed.</pre
+                >
+                <button type="button" data-copy="fix-ground">
+                  Copy floor check
+                </button>
+              </div>
+              <div class="copy-box">
+                <pre id="fix-colour">
+Check the exported materials. Make a test copy with a simple Principled BSDF base colour and roughness, then re-import the GLB and compare it with the source.</pre
+                >
+                <button type="button" data-copy="fix-colour">
+                  Copy material check
+                </button>
+              </div>
+              <div class="copy-box">
+                <pre id="fix-scale">
+Tell me the prop’s width, depth and height in metres. Compare them with my brief, fix any mismatch in a new version, and check the dimensions again after re-import.</pre
+                >
+                <button type="button" data-copy="fix-scale">
+                  Copy scale check
+                </button>
+              </div>
+            </details>
+            <details class="drawer">
+              <summary>Unstick the agent</summary>
+              <p>
+                Paste the exact error and say which step failed. Ask for one
+                check at a time; review any proposed command before running it.
+              </p>
+              <div class="copy-box">
+                <pre id="unstick-prompt">
+I am stuck at [step]. The exact message is [paste it here]. Explain what it means and suggest one read-only check. Ask before changing files or settings.</pre
+                >
+                <button type="button" data-copy="unstick-prompt">
+                  Copy troubleshooting request
+                </button>
+              </div>
+            </details>
+            <details class="drawer">
+              <summary>Three ideas for your next prop</summary>
+              <ul>
+                <li>
+                  <strong>Medkit:</strong> Can you recognise the silhouette at
+                  the size it appears in your inventory?
+                </li>
+                <li>
+                  <strong>Trail sign:</strong> Is the arrow clear from your
+                  player’s camera?
+                </li>
+                <li>
+                  <strong>Wall torch:</strong> Can you align its mount flush
+                  against a wall?
+                </li>
+              </ul>
+              <a href="#prompt-lab">Take your next idea to the lab ↑</a>
+            </details>
+            <div class="resource-links">
+              <a
+                href="https://docs.blender.org/manual/en/latest/modeling/meshes/primitives.html"
+                >Blender shapes ↗</a
+              >
+              <a
+                href="https://docs.blender.org/manual/en/latest/addons/import_export/scene_gltf2.html"
+                >Blender GLB export ↗</a
+              >
+              <a
+                href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/available_formats.html"
+                >Godot import guide ↗</a
+              >
+            </div>
+          </section>
+
+          <section
+            id="progress"
+            class="lesson progress"
+            aria-labelledby="progress-heading"
+          >
+            <h2 id="progress-heading">Your checkpoints</h2>
+            <p id="progress-text" role="status">0 of 5 checkpoints marked.</p>
+            <progress
+              id="progress-meter"
+              max="5"
+              value="0"
+              aria-label="Workshop checkpoints marked"
+            ></progress>
+            <p>
+              Mark them when you’ve done the work. You can explore every lesson
+              at any time.
+            </p>
+            <button type="button" id="reset-progress" disabled>
+              Clear checkpoints
+            </button>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer class="wrap">
+      <a href="#main">Back to top ↑</a>
+      ·
+      <a
+        href="https://github.com/Blazenetic/game-asset-workshop/blob/main/CONTRIBUTING.md"
+        >Contribute on GitHub</a
+      >
+    </footer>
+    <p id="copy-feedback" class="copy-feedback" role="status"></p>
+  </body>
+</html>
