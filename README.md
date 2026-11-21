@@ -2,7 +2,7 @@
 
 Make your first game prop in Blender. Pick a rescue crate, twilight lantern
 or orbital power cell, then take it through five short missions from setup to a
-Godot playtest. The workshop is designed for creators ages 16–20 who are new
+Godot playtest. The workshop is designed for creators ages 10 to 21+ who are new
 to Blender, AI agents, or both.
 
 **[Start the workshop](https://blazenetic.github.io/game-asset-workshop/)** ·
